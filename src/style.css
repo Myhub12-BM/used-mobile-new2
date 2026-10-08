@@ -11316,3 +11316,686 @@ footer p {
   }
 }
 
+
+/* =========================================================
+   ACCOUNT / LOGIN / REGISTER — PREMIUM MOBILE UI
+   ========================================================= */
+
+.account-page {
+  min-height: calc(100vh - 80px);
+  padding: 28px 16px 120px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(37, 99, 235, .12), transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(56, 189, 248, .14), transparent 28%),
+    #f6faff;
+}
+
+.account-shell {
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
+
+.account-auth-shell {
+  max-width: 500px;
+}
+
+.account-auth-brand {
+  text-align: center;
+  padding: 14px 10px 22px;
+}
+
+.account-auth-logo {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 14px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, .10);
+}
+
+.account-auth-logo img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.account-auth-brand > span {
+  display: block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.7px;
+  color: #2563eb;
+}
+
+.account-auth-brand h1 {
+  margin: 8px 0 6px;
+  font-size: clamp(27px, 7vw, 38px);
+  line-height: 1.05;
+  letter-spacing: -.8px;
+  color: #0f172a;
+}
+
+.account-auth-brand p {
+  max-width: 390px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.account-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 5px;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  background: #e9f1fb;
+}
+
+.account-mode-switch button {
+  border: 0;
+  min-height: 44px;
+  border-radius: 12px;
+  background: transparent;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-mode-switch button.active {
+  background: #fff;
+  color: #2563eb;
+  box-shadow: 0 5px 16px rgba(15, 23, 42, .08);
+}
+
+.google-login-button {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid #dce4ef;
+  border-radius: 15px;
+  background: #fff;
+  color: #172033;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .055);
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.google-login-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, .09);
+}
+
+.google-logo {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #4285f4;
+}
+
+.account-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.account-divider::before,
+.account-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #dfe7f1;
+}
+
+.account-auth-form {
+  padding: 20px;
+  border: 1px solid rgba(203, 213, 225, .72);
+  border-radius: 22px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 16px 45px rgba(15, 23, 42, .07);
+}
+
+.account-auth-form > label,
+.account-label-row label {
+  display: block;
+  margin: 0 0 7px;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.account-auth-form > label:not(:first-child) {
+  margin-top: 15px;
+}
+
+.account-label-row {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account-label-row label {
+  margin: 0;
+}
+
+.account-label-row button {
+  border: 0;
+  background: none;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-input-wrap {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid #dce5ef;
+  border-radius: 14px;
+  background: #f9fbfe;
+  transition: .2s ease;
+}
+
+.account-input-wrap:focus-within {
+  border-color: #60a5fa;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.08);
+}
+
+.account-input-wrap > span {
+  width: 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.account-input-wrap input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.account-input-wrap input::placeholder {
+  color: #9aa8ba;
+}
+
+.account-input-wrap > button {
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.account-primary-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 12px 25px rgba(37, 99, 235, .23);
+  cursor: pointer;
+}
+
+.account-primary-button span {
+  margin-left: 8px;
+  font-size: 17px;
+}
+
+.account-message {
+  margin-top: 13px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: #fff7ed;
+  color: #c2410c;
+  font-size: 11px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.account-security-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 13px 15px;
+  border: 1px solid #dbeafe;
+  border-radius: 15px;
+  background: #eff6ff;
+}
+
+.account-security-note > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.account-security-note div {
+  display: grid;
+  gap: 2px;
+}
+
+.account-security-note strong {
+  color: #1e3a8a;
+  font-size: 11px;
+}
+
+.account-security-note small {
+  color: #64748b;
+  font-size: 10px;
+}
+
+.account-profile-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(255,255,255,.3), transparent 35%),
+    linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #fff;
+  box-shadow: 0 18px 42px rgba(37,99,235,.22);
+}
+
+.account-avatar {
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  display: grid;
+  place-items: center;
+  border: 3px solid rgba(255,255,255,.65);
+  border-radius: 20px;
+  background: rgba(255,255,255,.18);
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.account-profile-copy {
+  min-width: 0;
+}
+
+.account-profile-copy span {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  opacity: .78;
+}
+
+.account-profile-copy h1 {
+  margin: 4px 0;
+  font-size: 22px;
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.account-profile-copy p {
+  margin: 0;
+  font-size: 12px;
+  opacity: .82;
+}
+
+.account-online-dot {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid rgba(255,255,255,.9);
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.account-menu-card {
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(15,23,42,.06);
+}
+
+.account-menu-card button {
+  width: 100%;
+  min-height: 72px;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  border-bottom: 1px solid #edf2f7;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.account-menu-card button:last-child {
+  border-bottom: 0;
+}
+
+.account-menu-card button > span {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #eff6ff;
+  font-size: 18px;
+}
+
+.account-menu-card button div {
+  display: grid;
+  gap: 3px;
+}
+
+.account-menu-card strong {
+  color: #172033;
+  font-size: 13px;
+}
+
+.account-menu-card small {
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.account-menu-card b {
+  color: #94a3b8;
+  font-size: 22px;
+}
+
+.account-logout-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 16px;
+  border: 1px solid #fecaca;
+  border-radius: 15px;
+  background: #fff;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.account-logout-button span {
+  margin-right: 7px;
+}
+
+@media (max-width: 600px) {
+  .account-page {
+    padding-top: 20px;
+  }
+
+  .account-auth-form {
+    padding: 16px;
+    border-radius: 19px;
+  }
+
+  .account-profile-card {
+    padding: 17px;
+  }
+
+  .account-avatar {
+    width: 55px;
+    height: 55px;
+    flex-basis: 55px;
+    border-radius: 17px;
+  }
+
+  .account-profile-copy h1 {
+    font-size: 19px;
+  }
+}
+
+
+/* ===== GOOGLE LOGIN - OFFICIAL MULTICOLOR LOGO ===== */
+
+.google-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.google-login-button .google-logo {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+}
+
+.google-login-button .google-logo svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+
+/* =========================================================
+   DESKTOP NAVIGATION UNDER HERO
+   Hidden on mobile
+   ========================================================= */
+
+.hero-desktop-nav {
+  display: block;
+  width: 100%;
+  padding: 18px 24px 4px;
+  background: #ffffff;
+}
+
+.hero-desktop-nav-inner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #f8fafc;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+}
+
+.hero-desktop-nav-links {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.hero-desktop-nav-links button {
+  min-height: 54px;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-desktop-nav-links button:hover {
+  color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 5px 16px rgba(37, 99, 235, 0.08);
+}
+
+.hero-desktop-nav-links button.active {
+  color: #ffffff;
+  background: #2563eb;
+  box-shadow: 0 7px 18px rgba(37, 99, 235, 0.22);
+}
+
+.hero-nav-icon {
+  width: 21px;
+  height: 21px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-nav-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-desktop-nav-links button.active .hero-nav-icon svg {
+  stroke-width: 2;
+}
+
+.hero-nav-cart-count {
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+@media (max-width: 768px) {
+  .hero-desktop-nav {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 950px) {
+  .hero-desktop-nav {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-desktop-nav-links button {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .hero-nav-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-nav-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+
+/* =========================================================
+   DESKTOP PAGE BACK BUTTON
+   ========================================================= */
+
+.desktop-page-back-wrap {
+  width: 100%;
+  padding: 18px 24px 0;
+  background: #ffffff;
+}
+
+.desktop-page-back {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.desktop-page-back:hover {
+  background: #f0f7ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.10);
+  transform: translateY(-1px);
+}
+
+.desktop-page-back:active {
+  transform: translateY(0);
+}
+
+.desktop-page-back-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+@media (max-width: 768px) {
+  .desktop-page-back-wrap {
+    display: none !important;
+  }
+}
+

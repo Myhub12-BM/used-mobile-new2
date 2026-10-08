@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { auth, googleProvider } from "./firebase.js";
 import PhoneCategoryPage from "./PhoneCategoryPage.jsx";
 import ShopPage from "./ShopPage.jsx";
 import "./style.css";
@@ -95,13 +97,6 @@ function Header() {
           <img src="/used-mobile-logo.svg" alt="Used Mobile Store" />
         </a>
 
-        <nav className={menuOpen ? "desktop-nav open" : "desktop-nav"}>
-          <a className="active" href="#">Home</a>
-          <a href="#products">Used Phones⌄</a>
-          <a href="#categories">Accessories⌄</a>
-          <a href="#about">About Us</a>
-          <a href="#contact">Contact</a>
-        </nav>
 
         <div className="header-right">
           <div className="search-box">
@@ -477,202 +472,225 @@ function PromoBanners() {
   );
 }
 
+function AccountPage() {
+  const [mode, setMode] = React.useState("login");
+  const [loggedIn, setLoggedIn] = React.useState(() => localStorage.getItem("usedMobileUser") === "true");
+  const [userName, setUserName] = React.useState(() => localStorage.getItem("usedMobileUserName") || "");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const email = String(form.get("email") || "").trim();
+    const password = String(form.get("password") || "");
+
+    if (!email || !password) {
+      setMessage("Please enter your email and password.");
+      return;
+    }
+
+    localStorage.setItem("usedMobileUser", "true");
+    localStorage.setItem("usedMobileUserName", email.split("@")[0]);
+    setUserName(email.split("@")[0]);
+    setLoggedIn(true);
+    setMessage("");
+  };
+
+  const handleRegister = (event) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") || "").trim();
+    const email = String(form.get("email") || "").trim();
+    const password = String(form.get("password") || "");
+    const confirm = String(form.get("confirmPassword") || "");
+
+    if (!name || !email || !password || !confirm) {
+      setMessage("Please complete all fields.");
+      return;
+    }
+
+    if (password !== confirm) {
+      setMessage("Passwords do not match.");
+      return;
+    }
+
+    localStorage.setItem("usedMobileUser", "true");
+    localStorage.setItem("usedMobileUserName", name);
+    setUserName(name);
+    setLoggedIn(true);
+    setMessage("");
+  };
+
+  const handleGoogleLogin = async () => {
+    setMessage("");
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      const name = user.displayName || user.email?.split("@")[0] || "Google User";
+      localStorage.setItem("usedMobileUser", "true");
+      localStorage.setItem("usedMobileUserName", name);
+      localStorage.setItem("usedMobileUserEmail", user.email || "");
+      localStorage.setItem("usedMobileUserPhoto", user.photoURL || "");
+      setUserName(name);
+      setLoggedIn(true);
+      setMessage("");
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      if (error.code === "auth/popup-closed-by-user") {
+        setMessage("Google sign-in was cancelled.");
+      } else if (error.code === "auth/popup-blocked") {
+        setMessage("Google sign-in popup was blocked. Please allow popups and try again.");
+      } else if (error.code === "auth/unauthorized-domain") {
+        setMessage("This website domain is not authorized in Firebase Authentication.");
+      } else {
+        setMessage("Google sign-in failed. Please try again.");
+      }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+    localStorage.removeItem("usedMobileUser");
+    localStorage.removeItem("usedMobileUserName");
+    localStorage.removeItem("usedMobileUserEmail");
+    localStorage.removeItem("usedMobileUserPhoto");
+    setUserName("");
+    setLoggedIn(false);
+    setMode("login");
+    setMessage("");
+  };
+
+  if (loggedIn) {
+    return (
+      <main className="mobile-page account-page">
+        <section className="account-shell">
+          <div className="account-profile-card">
+            <div className="account-avatar">
+              {userName ? userName.charAt(0).toUpperCase() : "U"}
+            </div>
+            <div className="account-profile-copy">
+              <span>WELCOME BACK</span>
+              <h1>{userName || "Mobile Store User"}</h1>
+              <p>Your account is active.</p>
+            </div>
+            <div className="account-online-dot" />
+          </div>
+
+          <div className="account-menu-card">
+            <button type="button"><span>👤</span><div><strong>My Profile</strong><small>Manage your account</small></div><b>›</b></button>
+            <button type="button"><span>📦</span><div><strong>My Orders</strong><small>View your purchases</small></div><b>›</b></button>
+            <button type="button"><span>❤️</span><div><strong>Saved Items</strong><small>Your favourite products</small></div><b>›</b></button>
+            <button type="button"><span>⚙️</span><div><strong>Settings</strong><small>Account preferences</small></div><b>›</b></button>
+          </div>
+
+          <button type="button" className="account-logout-button" onClick={handleLogout}>
+            <span>↪</span> Log Out
+          </button>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <main className="mobile-page account-page">
+      <section className="account-shell account-auth-shell">
+        <div className="account-auth-brand">
+          <div className="account-auth-logo"><img src="/used-mobile-logo.svg" alt="Used Mobile Store" /></div>
+          <span>YOUR MOBILE STORE ACCOUNT</span>
+          <h1>{mode === "login" ? "Welcome back" : "Create your account"}</h1>
+          <p>{mode === "login" ? "Login to manage your orders and saved products." : "Join us and enjoy a better mobile shopping experience."}</p>
+        </div>
+
+        <div className="account-mode-switch">
+          <button type="button" className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setMessage(""); }}>Login</button>
+          <button type="button" className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setMessage(""); }}>Register</button>
+        </div>
+
+        <button type="button" className="google-login-button" onClick={handleGoogleLogin}>
+  <span className="google-logo" aria-hidden="true">
+    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+      <path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42z"/>
+      <path fill="#34A853" d="M12 21.6c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.75 9.75 0 0 0 12 21.6z"/>
+      <path fill="#FBBC05" d="M6.54 13.69A5.86 5.86 0 0 1 6.23 12c0-.59.11-1.16.31-1.69V7.78H3.3A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.05 4.22l3.24-2.53z"/>
+      <path fill="#EA4335" d="M12 6.28c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.38 14.63 2.4 12 2.4a9.75 9.75 0 0 0-8.7 5.38l3.24 2.53C7.31 8 9.46 6.28 12 6.28z"/>
+    </svg>
+  </span>
+          <span>Continue with Google</span>
+        </button>
+
+        <div className="account-divider"><span>OR</span></div>
+
+        {mode === "login" ? (
+          <form className="account-auth-form" onSubmit={handleLogin}>
+            <label>Email Address</label>
+            <div className="account-input-wrap"><span>✉</span><input name="email" type="email" placeholder="you@example.com" autoComplete="email" /></div>
+
+            <div className="account-label-row"><label>Password</label><button type="button">Forgot password?</button></div>
+            <div className="account-input-wrap"><span>●</span><input name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" autoComplete="current-password" /><button type="button" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</button></div>
+
+            {message && <div className="account-message">{message}</div>}
+            <button className="account-primary-button" type="submit">Login to Account <span>→</span></button>
+          </form>
+        ) : (
+          <form className="account-auth-form" onSubmit={handleRegister}>
+            <label>Full Name</label>
+            <div className="account-input-wrap"><span>👤</span><input name="name" type="text" placeholder="Your full name" autoComplete="name" /></div>
+
+            <label>Email Address</label>
+            <div className="account-input-wrap"><span>✉</span><input name="email" type="email" placeholder="you@example.com" autoComplete="email" /></div>
+
+            <label>Password</label>
+            <div className="account-input-wrap"><span>●</span><input name="password" type="password" placeholder="Create a password" autoComplete="new-password" /></div>
+
+            <label>Confirm Password</label>
+            <div className="account-input-wrap"><span>●</span><input name="confirmPassword" type="password" placeholder="Repeat your password" autoComplete="new-password" /></div>
+
+            {message && <div className="account-message">{message}</div>}
+            <button className="account-primary-button" type="submit">Create Account <span>→</span></button>
+          </form>
+        )}
+
+        <div className="account-security-note"><span>✓</span><div><strong>Secure & Trusted</strong><small>Your account information stays private and protected.</small></div></div>
+      </section>
+    </main>
+  );
+}
+
 function Footer({ currentPage, onNavigate }) {
   return (
     <>
       <footer className="app-footer">
         <div className="footer-main">
           <div className="footer-brand-block">
-            <div className="footer-logo-wrap">
-              <img src="/used-mobile-logo.svg" alt="Used Mobile Store" />
-            </div>
-
-            <p>
-              Quality used phones and mobile accessories with trusted service,
-              fair prices and islandwide delivery.
-            </p>
-
-            <div className="footer-trust">
-              <span>✓ Genuine Products</span>
-              <span>✓ Quality Checked</span>
-              <span>✓ Islandwide Delivery</span>
-            </div>
+            <div className="footer-logo-wrap"><img src="/used-mobile-logo.svg" alt="Used Mobile Store" /></div>
+            <p>Quality used phones and mobile accessories with trusted service, fair prices and islandwide delivery.</p>
+            <div className="footer-trust"><span>✓ Genuine Products</span><span>✓ Quality Checked</span><span>✓ Islandwide Delivery</span></div>
           </div>
 
-          <div className="footer-links">
-            <h4>Shop</h4>
+          <div className="footer-links"><h4>Shop</h4><button onClick={() => onNavigate("shop")}>Used Phones</button><button onClick={() => onNavigate("categories")}>Accessories</button><button onClick={() => onNavigate("shop")}>Latest Deals</button><button onClick={() => onNavigate("shop")}>Featured Phones</button></div>
 
-            <button onClick={() => onNavigate("shop")}>
-              Used Phones
-            </button>
+          <div className="footer-links"><h4>Customer Care</h4><button onClick={() => onNavigate("home")}>Home</button><button onClick={() => onNavigate("categories")}>Service Center</button><button onClick={() => onNavigate("account")}>Account</button><button onClick={() => onNavigate("cart")}>Cart</button></div>
 
-            <button onClick={() => onNavigate("categories")}>
-              Accessories
-            </button>
-
-            <button onClick={() => onNavigate("shop")}>
-              Latest Deals
-            </button>
-
-            <button onClick={() => onNavigate("shop")}>
-              Featured Phones
-            </button>
-          </div>
-
-          <div className="footer-links">
-            <h4>Customer Care</h4>
-
-            <button onClick={() => onNavigate("home")}>
-              Home
-            </button>
-
-            <button onClick={() => onNavigate("categories")}>
-              Service Center
-            </button>
-
-            <button onClick={() => onNavigate("wishlist")}>
-              Wishlist
-            </button>
-
-            <button onClick={() => onNavigate("cart")}>
-              Cart
-            </button>
-          </div>
-
-          <div className="footer-contact-card">
-            <span className="footer-contact-label">NEED HELP?</span>
-
-            <h3>Talk to our team</h3>
-
-            <p>
-              We are ready to help you find the right phone.
-            </p>
-
-            <a
-              href="https://wa.me/94771234567"
-              target="_blank"
-              rel="noreferrer"
-              className="footer-whatsapp"
-            >
-              <span>💬</span>
-
-              <div>
-                <strong>WhatsApp Us</strong>
-                <small>077 123 4567</small>
-              </div>
-
-              <b>→</b>
-            </a>
-          </div>
+          <div className="footer-contact-card"><span className="footer-contact-label">NEED HELP?</span><h3>Talk to our team</h3><p>We are ready to help you find the right phone.</p><a href="https://wa.me/94771234567" target="_blank" rel="noreferrer" className="footer-whatsapp"><span>💬</span><div><strong>WhatsApp Us</strong><small>077 123 4567</small></div><b>→</b></a></div>
         </div>
-
-        <div className="footer-bottom-row">
-          <span>© 2026 Used Mobile Store</span>
-          <span>Trusted • Genuine • Affordable</span>
-          <span>Privacy • Terms</span>
-        </div>
+        <div className="footer-bottom-row"><span>© 2026 Used Mobile Store</span><span>Trusted • Genuine • Affordable</span><span>Privacy • Terms</span></div>
       </footer>
 
-      <nav
-        className="mobile-bottom-nav"
-        aria-label="Mobile navigation"
-      >
-
-        <button
-          type="button"
-          className={`mobile-nav-item ${
-            currentPage === "home" ? "active" : ""
-          }`}
-          onClick={() => onNavigate("home")}
-        >
-          <span className="mobile-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-5v6h-5A1.5 1.5 0 0 1 3 19.5z" />
-            </svg>
-          </span>
-
-          <small>Home</small>
-        </button>
-
-        <button
-          type="button"
-          className={`mobile-nav-item ${
-            currentPage === "shop" ? "active" : ""
-          }`}
-          onClick={() => onNavigate("shop")}
-        >
-          <span className="mobile-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z" />
-              <path d="M8 8h8M8 12h8M8 16h5" />
-            </svg>
-          </span>
-
-          <small>Shop</small>
-        </button>
-
-        <button
-          type="button"
-          className={`mobile-nav-item ${
-            currentPage === "categories" ? "active" : ""
-          }`}
-          onClick={() => onNavigate("categories")}
-        >
-          <span className="mobile-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="4" y="4" width="6" height="6" rx="1" />
-              <rect x="14" y="4" width="6" height="6" rx="1" />
-              <rect x="4" y="14" width="6" height="6" rx="1" />
-              <rect x="14" y="14" width="6" height="6" rx="1" />
-            </svg>
-          </span>
-
-          <small>Categories</small>
-        </button>
-
-        <button
-          type="button"
-          className={`mobile-nav-item ${
-            currentPage === "wishlist" ? "active" : ""
-          }`}
-          onClick={() => onNavigate("wishlist")}
-        >
-          <span className="mobile-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20.8 8.8c0 5.1-8.8 10.2-8.8 10.2S3.2 13.9 3.2 8.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6z" />
-            </svg>
-          </span>
-
-          <small>Wishlist</small>
-        </button>
-
-        <button
-          type="button"
-          className={`mobile-nav-item cart-nav ${
-            currentPage === "cart" ? "active" : ""
-          }`}
-          onClick={() => onNavigate("cart")}
-        >
-          <span className="mobile-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 4h2l2.2 11.2A2 2 0 0 0 9.2 17H18a2 2 0 0 0 1.9-1.4L22 8H7" />
-              <circle cx="10" cy="20" r="1.2" />
-              <circle cx="18" cy="20" r="1.2" />
-            </svg>
-          </span>
-
-          <small>Cart</small>
-
-          <i>0</i>
-        </button>
-
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+        <button type="button" className={`mobile-nav-item ${currentPage === "home" ? "active" : ""}`} onClick={() => onNavigate("home")}><span className="mobile-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-5v6h-5A1.5 1.5 0 0 1 3 19.5z" /></svg></span><small>Home</small></button>
+        <button type="button" className={`mobile-nav-item ${currentPage === "shop" ? "active" : ""}`} onClick={() => onNavigate("shop")}><span className="mobile-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z" /><path d="M8 8h8M8 12h8M8 16h5" /></svg></span><small>Shop</small></button>
+        <button type="button" className={`mobile-nav-item ${currentPage === "categories" ? "active" : ""}`} onClick={() => onNavigate("categories")}><span className="mobile-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></svg></span><small>Categories</small></button>
+        <button type="button" className={`mobile-nav-item ${currentPage === "account" ? "active" : ""}`} onClick={() => onNavigate("account")}><span className="mobile-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c.8-3.3 3.3-5 7-5s6.2 1.7 7 5" /></svg></span><small>Account</small></button>
+        <button type="button" className={`mobile-nav-item cart-nav ${currentPage === "cart" ? "active" : ""}`} onClick={() => onNavigate("cart")}><span className="mobile-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.2A2 2 0 0 0 9.2 17H18a2 2 0 0 0 1.9-1.4L22 8H7" /><circle cx="10" cy="20" r="1.2" /><circle cx="18" cy="20" r="1.2" /></svg></span><small>Cart</small><i>0</i></button>
       </nav>
     </>
   );
 }
-
-
-
 const accessoryProducts = {
   chargers: [
     ["Fast Charger 20W", "Rs. 4,500"],
@@ -1285,6 +1303,10 @@ function MobilePage({ page, onNavigate, onBrandSelect }) {
     );
   }
 
+  if (page === "account") {
+    return <AccountPage />;
+  }
+
   if (page === "wishlist") {
     return (
       <main className="mobile-page empty-page">
@@ -1370,6 +1392,48 @@ function App() {
           <Header />
           <Hero />
 
+          <nav className="hero-desktop-nav" aria-label="Desktop store navigation">
+            <div className="hero-desktop-nav-inner">
+              <div className="hero-desktop-nav-links">
+                <button type="button" className={currentPage === "home" ? "active" : ""} onClick={() => navigate("home")}>
+                  <span className="hero-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-5v6h-5A1.5 1.5 0 0 1 3 19.5z"/></svg>
+                  </span>
+                  Home
+                </button>
+
+                <button type="button" className={currentPage === "shop" ? "active" : ""} onClick={() => navigate("shop")}>
+                  <span className="hero-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+                  </span>
+                  Shop
+                </button>
+
+                <button type="button" className={currentPage === "categories" ? "active" : ""} onClick={() => navigate("categories")}>
+                  <span className="hero-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+                  </span>
+                  Categories
+                </button>
+
+                <button type="button" className={currentPage === "account" ? "active" : ""} onClick={() => navigate("account")}>
+                  <span className="hero-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.3 3.3-5 7-5s6.2 1.7 7 5"/></svg>
+                  </span>
+                  Account
+                </button>
+
+                <button type="button" className={currentPage === "cart" ? "active" : ""} onClick={() => navigate("cart")}>
+                  <span className="hero-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.2A2 2 0 0 0 9.2 17H18a2 2 0 0 0 1.9-1.4L22 8H7"/><circle cx="10" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/></svg>
+                  </span>
+                  Cart
+                  <span className="hero-nav-cart-count">0</span>
+                </button>
+              </div>
+            </div>
+          </nav>
+
           <Brands
             onBrandSelect={(brand) => handleBrandSelect(brand, "used")}
           />
@@ -1380,6 +1444,23 @@ function App() {
       ) : (
         <>
           <Header />
+
+          <div className="desktop-page-back-wrap">
+            <button
+              className="desktop-page-back"
+              onClick={() =>
+                navigate(
+                  currentPage.startsWith("category:")
+                    ? "categories"
+                    : "home"
+                )
+              }
+              type="button"
+            >
+              <span className="desktop-page-back-icon">←</span>
+              <span>Back</span>
+            </button>
+          </div>
 
           <MobilePage
             page={currentPage}
