@@ -1,0 +1,305 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #050b14;
+  color: white;
+}
+
+header {
+  min-height: 72px;
+  padding: 18px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #07101d;
+  border-bottom: 1px solid #12304d;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: #16a8ff;
+}
+
+nav {
+  display: flex;
+  gap: 25px;
+}
+
+nav a {
+  color: #d9e8f5;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #16a8ff;
+}
+
+.hero {
+  min-height: 620px;
+  padding: 80px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  background:
+    radial-gradient(circle at 80% 40%, #073d67 0%, transparent 35%),
+    linear-gradient(135deg, #050b14, #091827);
+}
+
+.small-title {
+  color: #16a8ff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: clamp(50px, 9vw, 100px);
+  line-height: .9;
+  font-weight: 950;
+}
+
+.hero h1 span {
+  color: #16a8ff;
+}
+
+.hero-text {
+  margin-top: 25px;
+  font-size: 20px;
+  color: #b9c8d6;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 35px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  background: #16a8ff;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 7px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button.outline {
+  background: transparent;
+  border: 1px solid #16a8ff;
+}
+
+.phone-card {
+  width: 280px;
+  min-height: 340px;
+  border: 1px solid #17476d;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #0c1d30, #050a11);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 50px #062e4d;
+}
+
+.phone {
+  font-size: 150px;
+  margin-bottom: 20px;
+}
+
+.phone-card p {
+  color: #16a8ff;
+}
+
+.categories,
+.products,
+.services {
+  padding: 80px 7%;
+}
+
+.categories {
+  background: #07101d;
+}
+
+h2 {
+  font-size: clamp(28px, 5vw, 48px);
+  margin-bottom: 35px;
+}
+
+.category-grid,
+.product-grid,
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.category-grid div {
+  padding: 30px 15px;
+  background: #0b1929;
+  border: 1px solid #12304d;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 38px;
+}
+
+.category-grid span {
+  display: block;
+  font-size: 15px;
+  margin-top: 12px;
+  color: #dceaf5;
+}
+
+.product-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.product-grid article {
+  background: #091625;
+  border: 1px solid #12304d;
+  border-radius: 15px;
+  overflow: hidden;
+  padding-bottom: 22px;
+}
+
+.product-image {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #102b44, #06101c);
+  color: #16a8ff;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.product-grid h3,
+.product-grid p,
+.product-grid strong {
+  display: block;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.product-grid h3 {
+  margin-top: 20px;
+}
+
+.product-grid p {
+  color: #91a6b9;
+  margin-top: 8px;
+  margin-bottom: 15px;
+}
+
+.product-grid strong {
+  color: #16a8ff;
+}
+
+.services {
+  background: #07101d;
+}
+
+.service-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.service-grid div {
+  background: #0b1929;
+  border: 1px solid #12304d;
+  padding: 30px;
+  border-radius: 15px;
+}
+
+.service-grid h3 {
+  margin-bottom: 12px;
+}
+
+.service-grid p {
+  color: #9cafc0;
+  line-height: 1.6;
+}
+
+footer {
+  padding: 60px 7%;
+  text-align: center;
+  background: #03070c;
+}
+
+footer h2 {
+  color: #16a8ff;
+  margin-bottom: 10px;
+}
+
+.socials {
+  margin: 25px 0;
+  color: #a9bed0;
+}
+
+.copyright {
+  color: #607386;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  nav {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero {
+    padding-top: 55px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .category-grid,
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-grid,
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .phone-card {
+    width: 100%;
+  }
+}

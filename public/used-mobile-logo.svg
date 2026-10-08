@@ -1,0 +1,173 @@
+<svg width="366" height="104" viewBox="0 0 366 104" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#009CFF"/>
+      <stop offset="100%" stop-color="#006ED8"/>
+    </linearGradient>
+  </defs>
+
+
+  <!-- =========================
+       BLUE BACK PHONE
+       ========================= -->
+
+  <g transform="translate(45 12) rotate(10 42 42)">
+
+    <rect
+      x="20"
+      y="22"
+      width="43"
+      height="73"
+      rx="8"
+      fill="none"
+      stroke="url(#blue)"
+      stroke-width="6"
+    />
+
+    <circle
+      cx="41.5"
+      cy="84"
+      r="2.5"
+      fill="#006ED8"
+    />
+
+  </g>
+
+
+  <!-- =========================
+       BLUE ORBIT
+       ========================= -->
+
+  <path
+    d="M43 72
+       C45 45 69 29 91 38
+       C104 43 105 56 96 66
+       C86 78 65 83 47 78"
+    fill="none"
+    stroke="url(#blue)"
+    stroke-width="7"
+    stroke-linecap="round"
+  />
+
+
+  <!-- =========================
+       MAIN WHITE PHONE
+       ========================= -->
+
+  <g transform="translate(56 4) rotate(-7 38 45)">
+
+    <rect
+      x="18"
+      y="2"
+      width="48"
+      height="88"
+      rx="9"
+      fill="#071E38"
+      stroke="#FFFFFF"
+      stroke-width="5"
+    />
+
+    <!-- top speaker -->
+
+    <rect
+      x="34"
+      y="7"
+      width="16"
+      height="3"
+      rx="2"
+      fill="#FFFFFF"
+    />
+
+    <!-- camera -->
+
+    <circle
+      cx="56"
+      cy="8.5"
+      r="1.7"
+      fill="#FFFFFF"
+    />
+
+    <!-- home / bottom detail -->
+
+    <circle
+      cx="42"
+      cy="82"
+      r="2.5"
+      fill="#FFFFFF"
+    />
+
+  </g>
+
+
+  <!-- =========================
+       USED
+       ========================= -->
+
+  <text
+    x="118"
+    y="43"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="27"
+    font-weight="900"
+    fill="#FFFFFF"
+  >USED</text>
+
+
+  <!-- =========================
+       MOBILE
+       ========================= -->
+
+  <text
+    x="192"
+    y="43"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="27"
+    font-weight="900"
+    fill="#0799F5"
+  >MOBILE</text>
+
+
+  <!-- =========================
+       LEFT LINE
+       ========================= -->
+
+  <line
+    x1="119"
+    y1="58"
+    x2="158"
+    y2="58"
+    stroke="#FFFFFF"
+    stroke-width="2"
+  />
+
+
+  <!-- =========================
+       RIGHT LINE
+       ========================= -->
+
+  <line
+    x1="302"
+    y1="58"
+    x2="343"
+    y2="58"
+    stroke="#FFFFFF"
+    stroke-width="2"
+  />
+
+
+  <!-- =========================
+       STORE
+       ========================= -->
+
+  <text
+    x="168"
+    y="66"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="13"
+    font-weight="800"
+    letter-spacing="7"
+    fill="#FFFFFF"
+  >STORE</text>
+
+</svg>

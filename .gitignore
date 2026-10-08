@@ -1,0 +1,12 @@
+node_modules/
+dist/
+backups/
+.env
+.env.*
+!.env.example
+.DS_Store
+
+src/*.backup
+src/*.backup-*
+src/*.before-*
+src/*.repair-backup

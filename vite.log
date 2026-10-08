@@ -1,0 +1,11 @@
+nohup: ignoring input
+
+> used-mobile-store@1.0.0 dev
+> vite --host 0.0.0.0
+
+
+  VITE v8.3.1  ready in 2001 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.147.179.150:5173/  ccmni1
+  ➜  Network: http://10.204.214.72:5173/   ccmni0
